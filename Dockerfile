@@ -34,9 +34,9 @@ RUN apt-get install -y git maven nano unzip wget subversion sshpass curl
 
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2
 
-WORKDIR /SequenceR\ 2.0
+WORKDIR /SequenceR
 
-COPY . /SequenceR\ 2.0
+COPY . /SequenceR
 
 #RUN pip3 install --upgrade pip==19.1
 RUN pip3 install --upgrade pip setuptools wheel
