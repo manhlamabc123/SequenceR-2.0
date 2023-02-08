@@ -7,4 +7,4 @@ services:
     volumes:
       - type: bind
         source: .
-        target: /SequenceR \2.0
+        target: /SequenceR\ 2.0
