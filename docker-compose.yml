@@ -4,7 +4,3 @@ services:
       context: .
       dockerfile: Dockerfile
     image: manhlamabc/sequencer2
-    volumes:
-      - type: bind
-        source: .
-        target: /SequenceR
