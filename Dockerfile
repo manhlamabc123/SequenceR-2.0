@@ -52,3 +52,5 @@ RUN cpan App::cpanminus
 RUN cpanm --installdeps /SequenceR/src/lib/defects4j/
 RUN /SequenceR/src/lib/defects4j/init.sh
 ENV PATH="${PATH}:/SequenceR/src/lib/defects4j/framework/bin"
+
+RUN pip install torch==1.10.1+cu102 torchvision==0.11.2+cu102 torchaudio==0.10.1 -f https://download.pytorch.org/whl/cu102/torch_stable.html
