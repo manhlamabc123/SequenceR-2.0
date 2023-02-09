@@ -1,5 +1,6 @@
 #! /bin/bash
 
+
 cd $OpenNMT_py
 python translate.py \
 	-model $data_path/final-model_step_20000.pt \
