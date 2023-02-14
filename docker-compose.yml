@@ -3,4 +3,4 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: manhlamabc/sequencer2
+    image: manhlamabc/sequencer2:1.0
