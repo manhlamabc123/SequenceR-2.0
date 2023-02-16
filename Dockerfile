@@ -37,20 +37,3 @@ RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2
 WORKDIR /SequenceR
 
 COPY . /SequenceR
-
-#RUN pip3 install --upgrade pip==19.1
-RUN pip3 install --upgrade pip setuptools wheel
-RUN /SequenceR/src/setup_env.sh
-ENV data_path=/SequenceR/data
-ENV OpenNMT_py=/SequenceR/src/lib/OpenNMT-py
-
-RUN apt-get install -y libcam-pdf-perl
-ENV PERL_MM_USE_DEFAULT 1
-
-RUN git clone https://github.com/rjust/defects4j /SequenceR/src/lib/defects4j
-RUN cpan App::cpanminus
-RUN cpanm --installdeps /SequenceR/src/lib/defects4j/
-RUN /SequenceR/src/lib/defects4j/init.sh
-ENV PATH="${PATH}:/SequenceR/src/lib/defects4j/framework/bin"
-
-RUN pip install torch==1.10.1+cu102 torchvision==0.11.2+cu102 torchaudio==0.10.1 -f https://download.pytorch.org/whl/cu102/torch_stable.html
