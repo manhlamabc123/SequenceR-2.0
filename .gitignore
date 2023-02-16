@@ -1,0 +1,9 @@
+src/lib
+data/final-model_step_10000.pt
+data/final-model_step_20000.pt
+data/final.train.0.pt
+data/final.valid.0.pt
+data/final.vocab.pt
+data/preprocess.out
+data/train.final.out
+data/train.out
