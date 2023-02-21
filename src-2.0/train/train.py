@@ -21,11 +21,11 @@ def per_iter(optimizer: optim.Optimizer):
     # Return final_loss
     pass
 
-def train(model: nn.Module, learning_rate=LEARNING_RATE, momentum=MOMENTUM):
+def train(model: nn.Module, learning_rate=LEARNING_RATE):
     # Arguments: model, train_set, val_set, learning_rate, epochs, print_every
     # Variables
     # Loss & Optimizer
-    optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=momentum)
+    optimizer = optim.SGD(model.parameters(), lr=learning_rate)
     # Training
     ## Start timer
     ## Make sure gradient tracking is on, and do a pass over the data
