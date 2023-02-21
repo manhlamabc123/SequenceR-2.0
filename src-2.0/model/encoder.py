@@ -29,4 +29,4 @@ class RNNEncoder(nn.Module):
         output_lstm, (hidden_state, cell_state) = self.lstm(output_embedding)
         output_linear = self.linear(self.linear(output_lstm))
         
-        return output_linear, hidden_state, cell_state
+        return output_linear, hidden_state
