@@ -5,7 +5,6 @@ class RNNEncoder(nn.Module):
     def __init__(self, input_size):
         super().__init__()
 
-
         self.embedding = nn.Embedding(
             num_embeddings=input_size, 
             embedding_dim=EMBEDDING_SIZE, 
@@ -18,7 +17,7 @@ class RNNEncoder(nn.Module):
             dropout=DROPOUT_RATE,
             bidirectional=True
         )
-        self.linear = nn.Linear(
+        self.bridge = nn.Linear(
             in_features=HIDDEN_SIZE * 2,
             out_features=HIDDEN_SIZE * 2,
             bias=True
@@ -27,6 +26,6 @@ class RNNEncoder(nn.Module):
     def forward(self, input):
         output_embedding = self.embedding(input)
         output_lstm, (hidden_state, cell_state) = self.lstm(output_embedding)
-        output_linear = self.linear(self.linear(output_lstm))
+        output_bridge = self.bridge(self.bridge(output_lstm))
         
-        return output_linear, hidden_state
+        return output_bridge, hidden_state

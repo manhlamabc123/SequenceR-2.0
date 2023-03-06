@@ -5,10 +5,6 @@ class InputFeedRNNDecoder(nn.Module):
     def __init__(self, input_size):
         super().__init__()
 
-        self.bridge = nn.Linear(
-            in_features=HIDDEN_SIZE * 2,
-            out_features=HIDDEN_SIZE
-        )
         self.embedding = nn.Embedding(
             num_embeddings=input_size,
             embedding_dim=EMBEDDING_SIZE,
