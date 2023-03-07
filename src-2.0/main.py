@@ -17,6 +17,19 @@ if args.data:
     handling_corpus(
         src_dir="src-train.txt",
         tgt_dir="tgt-train.txt",
+        output_file_name="train"
+    )
+
+    handling_corpus(
+        src_dir="src-val.txt",
+        tgt_dir="tgt-val.txt",
+        output_file_name="val"
+    )
+
+    handling_corpus(
+        src_dir="src-test.txt",
+        tgt_dir="tgt-test.txt",
+        output_file_name="test"
     )
 
     # preprocess(

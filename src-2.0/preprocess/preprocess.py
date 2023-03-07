@@ -2,7 +2,7 @@ from constanst import *
 from torchtext.data import Field, TabularDataset, BucketIterator
 import json
 
-def handling_corpus(src_dir: str, tgt_dir: str) -> None:
+def handling_corpus(src_dir: str, tgt_dir: str, output_file_name: str) -> None:
     ## Read dataset .txt to list of one-line code
     src = open(DATA_DIR + src_dir, 'r').read().splitlines()
     tgt = open(DATA_DIR + tgt_dir, 'r').read().splitlines()
@@ -15,7 +15,7 @@ def handling_corpus(src_dir: str, tgt_dir: str) -> None:
         } for example in src_tgt
     ]
     ## From lists of jsons to .json
-    with open('preprocess/preprocessed/data.json', 'w') as file:
+    with open(f'preprocess/preprocessed/{output_file_name}.json', 'w') as file:
         for item in raw_data:
             json.dump(item, file)
             file.write('\n')
