@@ -1,8 +1,8 @@
 import torch.nn as nn
-from encoder import RNNEncoder
-from decoder import InputFeedRNNDecoder
-from copy import CopyGenerator
-from attention import GlobalAttention
+from .encoder import RNNEncoder
+from .decoder import InputFeedRNNDecoder
+from .copy import CopyGenerator
+from .attention import GlobalAttention
 
 class Model(nn.Module):
     def __init__(self, input_size, output_size):
