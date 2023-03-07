@@ -2,7 +2,7 @@ import torch.nn as nn
 from hyperparameters import *
 
 class GlobalAttention(nn.Module):
-    def __init__(self, output_size):
+    def __init__(self):
         super().__init__()
 
         self.linear0 = nn.Linear(
