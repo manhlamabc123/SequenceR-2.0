@@ -9,3 +9,4 @@ data/train.final.out
 data/train.out
 src-2.0/preprocess/__pycache__
 src-2.0/__pycache__
+src-2.0/preprocess/preprocessed/data.json
