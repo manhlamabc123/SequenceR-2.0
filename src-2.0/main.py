@@ -32,19 +32,20 @@ if args.data:
         output_file_name="test"
     )
 
-    # preprocess(
-    #     max_src_seq_length=1010,
-    #     max_tgt_seq_length=100,
-    #     src_vocab_threshold=1000,
-    #     tgt_vocab_threshold=1000
-    # )
-
     print("> Done!\n")
 
 if args.train:
     print("> Training...\n")
 
     print("> Load dataset...\n")
+
+    train_set, val_set, _ = preprocess(
+        data_dir="preprocess/preprocessed",
+        max_src_seq_length=1010,
+        max_tgt_seq_length=100,
+        src_vocab_threshold=1000,
+        tgt_vocab_threshold=1000
+    )
 
     print("> Initialize model...\n")
 

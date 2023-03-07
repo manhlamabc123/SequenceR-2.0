@@ -1,4 +1,5 @@
 from constanst import *
+from hyperparameters import *
 from torchtext.data import Field, TabularDataset, BucketIterator
 import json
 
@@ -21,6 +22,7 @@ def handling_corpus(src_dir: str, tgt_dir: str, output_file_name: str) -> None:
             file.write('\n')
 
 def preprocess(
+        data_dir: str,
         max_src_seq_length: int = 192,
         max_tgt_seq_length: int = 192,
         src_vocab_threshold: int = 0,
@@ -44,6 +46,30 @@ def preprocess(
         'tgt': ('tgt', target),
     }
 
-    # train_data, test_data = TabularDataset.splits(
+    train_data, val_data, test_data = TabularDataset.splits(
+        path=data_dir,
+        train='train.json',
+        validation='val.json',
+        test='test.json',
+        format='json',
+        fields=fields
+    )
 
-    # )
+    source.build_vocab(
+        train_data,
+        max_size=max_src_seq_length,
+        min_freq=src_vocab_threshold
+    )
+    target.build_vocab(
+        train_data,
+        max_size=max_src_seq_length,
+        min_freq=src_vocab_threshold
+    )
+
+    train_iterator, val_iterator, test_iterator = BucketIterator.splits(
+        (train_data, val_data, test_data),
+        batch_size=BATCH_SIZE,
+        device=DEVICE
+    )
+
+    return train_iterator, val_iterator, test_iterator
