@@ -1,41 +1,49 @@
 from constanst import *
-import pandas as pd
+from torchtext.data import Field, TabularDataset, BucketIterator
+import json
+
+def handling_corpus(src_dir: str, tgt_dir: str) -> None:
+    ## Read dataset .txt to list of one-line code
+    src = open(DATA_DIR + src_dir, 'r').read().splitlines()
+    tgt = open(DATA_DIR + tgt_dir, 'r').read().splitlines()
+    src_tgt = list(zip(src, tgt)) # Combines 2 lists into 1 lists of (source, target)
+    ## From lists of (source, target) to lists of jsons
+    raw_data = [
+        {
+            "src": example[0],
+            "tgt": example[1]
+        } for example in src_tgt
+    ]
+    ## From lists of jsons to .json
+    with open('preprocess/preprocessed/data.json', 'w') as file:
+        for item in raw_data:
+            json.dump(item, file)
+            file.write('\n')
 
 def preprocess(
-        src_dir: str,
-        tgt_dir: str,
         max_src_seq_length: int = 192,
         max_tgt_seq_length: int = 192,
         src_vocab_threshold: int = 0,
         tgt_vocab_threshold: int = 0
 ):
-    #----------Load raw dataset----------
-    ## Read dataset (.txt to list of one-line code)
-    src = open(DATA_DIR + src_dir, 'r').read().splitlines()
-    tgt = open(DATA_DIR + tgt_dir, 'r').read().splitlines()
-    ## Convert to pandas.DataFrame
-    raw_data = {
-        "src": [line for line in src],
-        "tgt": [line for line in tgt],
+    tokenize = lambda x: x.split()
+
+    source = Field(
+        sequential=True,
+        use_vocab=True,
+        tokenize=tokenize,
+    )
+    target = Field(
+        sequential=True,
+        use_vocab=True,
+        tokenize=tokenize,
+    )
+
+    fields = {
+        'src': ('src', source),
+        'tgt': ('tgt', target),
     }
-    data_frame = pd.DataFrame(raw_data, columns=["src", "tgt"]) # [33798 rows x 2 columns]
-    #----------------------------------------
-    
-    #----------Tokenization----------
-    ## Element: String -> List of String (Token)
-    data_frame["src"] = data_frame["src"].apply(lambda element: element.split(" "))
-    data_frame["tgt"] = data_frame["tgt"].apply(lambda element: element.split(" "))
-    ## Filter all sequence with more than max_seq_length
-    data_frame = data_frame[ data_frame["src"].str.len() <= max_src_seq_length ]
-    data_frame = data_frame[ data_frame["tgt"].str.len() <= max_tgt_seq_length ] # [33469 rows x 2 columns]
-    #----------------------------------------
 
-    #----------Create vocabulary----------
-    #----------------------------------------
+    # train_data, test_data = TabularDataset.splits(
 
-    #----------Numericalize----------
-    #----------------------------------------
-
-    #----------Debug----------
-    print(data_frame)
-    #----------------------------------------
+    # )

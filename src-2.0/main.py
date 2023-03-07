@@ -1,7 +1,7 @@
 import argparse
 import torch
 
-from preprocess.preprocess import preprocess
+from preprocess.preprocess import handling_corpus, preprocess
 
 parser = argparse.ArgumentParser(description="This is just a description")
 parser.add_argument('-m', '--model', action='store', help="model's name", required=False)
@@ -14,14 +14,17 @@ args = parser.parse_args()
 if args.data:
     print("> Processing Data...\n")
 
-    preprocess(
+    handling_corpus(
         src_dir="src-train.txt",
         tgt_dir="tgt-train.txt",
-        max_src_seq_length=1010,
-        max_tgt_seq_length=100,
-        src_vocab_threshold=1000,
-        tgt_vocab_threshold=1000
     )
+
+    # preprocess(
+    #     max_src_seq_length=1010,
+    #     max_tgt_seq_length=100,
+    #     src_vocab_threshold=1000,
+    #     tgt_vocab_threshold=1000
+    # )
 
     print("> Done!\n")
 
