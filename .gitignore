@@ -13,3 +13,6 @@ src-2.0/preprocess/preprocessed/test.json
 src-2.0/preprocess/preprocessed/train.json
 src-2.0/preprocess/preprocessed/val.json
 src-2.0/model/__pycache__
+src-2.0/evaluate/__pycache__
+src-2.0/metrics/__pycache__
+src-2.0/train/__pycache__
