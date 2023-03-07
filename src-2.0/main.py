@@ -1,5 +1,7 @@
 import argparse
 
+from preprocess.preprocess import preprocess
+
 parser = argparse.ArgumentParser(description="This is just a description")
 parser.add_argument('-m', '--model', action='store', help="model's name", required=False)
 group = parser.add_mutually_exclusive_group()
@@ -10,6 +12,11 @@ args = parser.parse_args()
 
 if args.data:
     print("> Processing Data...\n")
+
+    preprocess(
+        src_dir="src-train.txt",
+        tgt_dir="tgt-train.txt"
+        )
 
     print("> Done!\n")
 
