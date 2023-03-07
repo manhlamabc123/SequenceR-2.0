@@ -19,8 +19,7 @@ def per_iter(train_set, model: nn.Module, optimizer: optim.Optimizer, criterion:
     # Loop through train_set
     for i, data in enumerate(train_set):
         ## Source, Target
-        input, target = data
-        input, target = input.to(DEVICE), target.to(DEVICE)
+        input, target = data.src, data.tgt
 
         ## Clear cache
         optimizer.zero_grad()

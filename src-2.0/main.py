@@ -3,6 +3,8 @@ import torch
 
 from preprocess.preprocess import handling_corpus, preprocess
 from model.model import Model
+from train.train import train
+from constanst import *
 
 parser = argparse.ArgumentParser(description="This is just a description")
 parser.add_argument('-m', '--model', action='store', help="model's name", required=False)
@@ -36,8 +38,6 @@ if args.data:
     print("> Done!\n")
 
 if args.train:
-    print("> Training...\n")
-
     print("> Load dataset...\n")
 
     train_set, val_set, _, source, target = preprocess(
@@ -53,6 +53,14 @@ if args.train:
     model = Model(
         input_size=len(source.vocab),
         output_size=len(target.vocab)
+    ).to(device=DEVICE)
+
+    print("> Training...\n")
+
+    train(
+        model=model,
+        train_set=train_set,
+        val_set=val_set
     )
 
     print("> Done!\n")
