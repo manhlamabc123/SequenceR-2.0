@@ -7,3 +7,5 @@ data/final.vocab.pt
 data/preprocess.out
 data/train.final.out
 data/train.out
+src-2.0/preprocess/__pycache__
+src-2.0/__pycache__
