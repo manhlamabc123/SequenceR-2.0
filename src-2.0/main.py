@@ -2,6 +2,7 @@ import argparse
 import torch
 
 from preprocess.preprocess import handling_corpus, preprocess
+from model.model import Model
 
 parser = argparse.ArgumentParser(description="This is just a description")
 parser.add_argument('-m', '--model', action='store', help="model's name", required=False)
@@ -39,7 +40,7 @@ if args.train:
 
     print("> Load dataset...\n")
 
-    train_set, val_set, _ = preprocess(
+    train_set, val_set, _, source, target = preprocess(
         data_dir="preprocess/preprocessed",
         max_src_seq_length=1010,
         max_tgt_seq_length=100,
@@ -48,6 +49,11 @@ if args.train:
     )
 
     print("> Initialize model...\n")
+
+    model = Model(
+        input_size=len(source.vocab),
+        output_size=len(target.vocab)
+    )
 
     print("> Done!\n")
 

@@ -57,12 +57,10 @@ def preprocess(
 
     source.build_vocab(
         train_data,
-        max_size=max_src_seq_length,
         min_freq=src_vocab_threshold
     )
     target.build_vocab(
         train_data,
-        max_size=max_src_seq_length,
         min_freq=src_vocab_threshold
     )
 
@@ -72,4 +70,4 @@ def preprocess(
         device=DEVICE
     )
 
-    return train_iterator, val_iterator, test_iterator
+    return train_iterator, val_iterator, test_iterator, source, target
