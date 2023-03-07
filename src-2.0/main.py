@@ -1,4 +1,5 @@
 import argparse
+import torch
 
 from preprocess.preprocess import preprocess
 
@@ -15,8 +16,12 @@ if args.data:
 
     preprocess(
         src_dir="src-train.txt",
-        tgt_dir="tgt-train.txt"
-        )
+        tgt_dir="tgt-train.txt",
+        max_src_seq_length=1010,
+        max_tgt_seq_length=100,
+        src_vocab_threshold=1000,
+        tgt_vocab_threshold=1000
+    )
 
     print("> Done!\n")
 
