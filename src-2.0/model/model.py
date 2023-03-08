@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 from .encoder import RNNEncoder
 from .decoder import InputFeedRNNDecoder
@@ -15,7 +16,7 @@ class Model(nn.Module):
     def forward(self, input, target=None):
         # Get target length
         if target == None:
-            target_sequence_length = 100
+            target_sequence_length = MAX_TGT_SEQ_LENGTH
         else:
             target_sequence_length = target.shape[0]
 
@@ -24,8 +25,9 @@ class Model(nn.Module):
 
         # Decoder
         decoder_hidden_state = encoder_last_hidden_state
+        decoder_hidden_state = torch.zeros(decoder_hidden_state.shape)
         for i in range(target_sequence_length):
-            decoder_hidden_state = self.decoder(input, decoder_hidden_state, encoder_hidden_states)
+            decoder_hidden_state, decoder_cell_state = self.decoder(input, decoder_hidden_state, decoder_cell_state, encoder_hidden_states)
 
         output_generator = self.generator()
         pass

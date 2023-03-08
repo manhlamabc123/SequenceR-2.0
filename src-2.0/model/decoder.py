@@ -39,10 +39,16 @@ class InputFeedRNNDecoder(nn.Module):
             )
         )
 
-    def forward(self, input, previous_hidden_state, context_vector):
+    def forward(self, input, hidden_state, cell_state, context_vector):
+        # Embedding
         output_embedding = self.embedding(input)
+
+        # Dropout
         output_dropout = self.dropout(output_embedding)
 
-        hidden_states, (hidden_state, cell_state)  = self.stacked_lstm(output_dropout, previous_hidden_state)
+        # Attention
 
-        return hidden_state
+        # LSTM
+        (hidden_state, cell_state) = self.stacked_lstm(output_dropout, (hidden_state, cell_state))
+
+        return hidden_state, cell_state
