@@ -32,14 +32,14 @@ class RNNEncoder(nn.Module):
         )
 
     def forward(self, input):
-        print('Input: ', input.size())
+        # print('Input: ', input.size())
         output_embedding = self.embedding(input)
-        print('Embedding: ', output_embedding.size())
+        # print('Embedding: ', output_embedding.size())
         hidden_states, (hidden_state, cell_state) = self.lstm(output_embedding)
-        print('Hidden state: ', hidden_state.size())
+        # print('Hidden state: ', hidden_state.size())
         last_hidden_state = torch.cat((hidden_state[2].unsqueeze(0), hidden_state[3].unsqueeze(0)), dim=2)
-        print('Last state: ', last_hidden_state.size())
+        # print('Last state: ', last_hidden_state.size())
         last_hidden_state = self.bridge(last_hidden_state)
-        print('Hidden state after bridge: ', last_hidden_state.size())
+        # print('Hidden state after bridge: ', last_hidden_state.size())
         
         return last_hidden_state
