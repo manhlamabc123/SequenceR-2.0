@@ -10,7 +10,7 @@ from metrics.accuracy import accuracy
 from metrics.perplexity import perplexity
 
 def per_iter(train_set, model: nn.Module, optimizer: optim.Optimizer, criterion: nn.NLLLoss):
-    # Arguments: model, train_set, optimizer, criterion
+    # Arguments: train_set, model, optimizer, criterion
     
     # Variables
     loss_final = 0
