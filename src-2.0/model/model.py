@@ -11,10 +11,21 @@ class Model(nn.Module):
         self.encoder = RNNEncoder(input_size)
         self.decoder = InputFeedRNNDecoder(input_size)
         self.generator = CopyGenerator(output_size)
-        self.attention = GlobalAttention()
 
-    def forward(self, input, target):
-        encoder_last_hidden_state = self.encoder(input)
-        output_decoder = self.decoder(input)
+    def forward(self, input, target=None):
+        # Get target length
+        if target == None:
+            target_sequence_length = 100
+        else:
+            target_sequence_length = target.shape[0]
+
+        # Encoder
+        encoder_hidden_states, encoder_last_hidden_state = self.encoder(input)
+
+        # Decoder
+        decoder_hidden_state = encoder_last_hidden_state
+        for i in range(target_sequence_length):
+            decoder_hidden_state = self.decoder(input, decoder_hidden_state, encoder_hidden_states)
+
         output_generator = self.generator()
         pass

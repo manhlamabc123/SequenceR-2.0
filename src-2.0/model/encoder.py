@@ -42,4 +42,4 @@ class RNNEncoder(nn.Module):
         last_hidden_state = self.bridge(last_hidden_state)
         # print('Hidden state after bridge: ', last_hidden_state.size())
         
-        return last_hidden_state
+        return hidden_states, last_hidden_state
