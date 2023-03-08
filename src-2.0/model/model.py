@@ -14,7 +14,7 @@ class Model(nn.Module):
         self.attention = GlobalAttention()
 
     def forward(self, input, target):
-        output_encoder, hidden_state, cell_state = self.encoder(input)
+        encoder_last_hidden_state = self.encoder(input)
         output_decoder = self.decoder(input)
         output_generator = self.generator()
         pass
