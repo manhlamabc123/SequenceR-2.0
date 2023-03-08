@@ -5,6 +5,7 @@ from preprocess.preprocess import handling_corpus, preprocess
 from model.model import Model
 from train.train import train
 from constanst import *
+from hyperparameters import *
 
 parser = argparse.ArgumentParser(description="This is just a description")
 parser.add_argument('-m', '--model', action='store', help="model's name", required=False)
@@ -42,11 +43,15 @@ if args.train:
 
     train_set, val_set, _, source, target = preprocess(
         data_dir="preprocess/preprocessed",
-        max_src_seq_length=1010,
-        max_tgt_seq_length=100,
-        src_vocab_threshold=1000,
-        tgt_vocab_threshold=1000
+        max_src_seq_length=MAX_SRC_SEQ_LENGTH,
+        max_tgt_seq_length=MAX_TGT_SEQ_LENGTH,
+        src_vocab_threshold=SRC_VOCAB_THRESHOLD,
+        tgt_vocab_threshold=TGT_VOCAB_THRESHOLD
     )
+
+    print('> Source vocab: ', len(source.vocab))
+    print('> Target vocab: ', len(target.vocab))
+    print('\n')
 
     print("> Initialize model...\n")
 

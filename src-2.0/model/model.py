@@ -2,7 +2,7 @@ import torch.nn as nn
 from .encoder import RNNEncoder
 from .decoder import InputFeedRNNDecoder
 from .copy import CopyGenerator
-from .attention import GlobalAttention
+from hyperparameters import *
 
 class Model(nn.Module):
     def __init__(self, input_size, output_size):
