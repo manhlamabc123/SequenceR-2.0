@@ -28,12 +28,21 @@ class InputFeedRNNDecoder(nn.Module):
                 hidden_size=HIDDEN_SIZE * 2
             )
         )
+        self.global_attention = nn.Sequential(
+            nn.Linear(
+                in_features=HIDDEN_SIZE * 4,
+                out_features=HIDDEN_SIZE * 2
+            ),
+            nn.Linear(
+                in_features=HIDDEN_SIZE * 2,
+                out_features=HIDDEN_SIZE * 2
+            )
+        )
 
-    def forward(self, input, encoder_hidden_state):
-        decoder_hidden_state_0 = self.bridge(encoder_hidden_state)
-
+    def forward(self, input, previous_hidden_state, context_vector):
         output_embedding = self.embedding(input)
         output_dropout = self.dropout(output_embedding)
-        output, (hidden_state, cell_state)  = self.stacked_lstm(output_dropout, decoder_hidden_state_0)
 
-        return output, hidden_state
+        hidden_states, (hidden_state, cell_state)  = self.stacked_lstm(output_dropout, previous_hidden_state)
+
+        return hidden_state
