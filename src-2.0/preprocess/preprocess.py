@@ -34,6 +34,7 @@ def preprocess(
         use_vocab=True,
         init_token='<SOS>',
         eos_token='<EOS>',
+        fix_length=SRC_VOCAB_THRESHOLD + 4,
         tokenize=tokenize,
     )
     target = Field(
@@ -41,6 +42,7 @@ def preprocess(
         use_vocab=True,
         init_token='<SOS>',
         eos_token='<EOS>',
+        fix_length=SRC_VOCAB_THRESHOLD + 4,
         tokenize=tokenize,
     )
 
