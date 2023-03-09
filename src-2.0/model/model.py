@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 from .encoder import RNNEncoder
 from .decoder import InputFeedRNNDecoder
-from .copy import CopyGenerator
 from hyperparameters import *
 from constanst import *
 
@@ -33,13 +32,13 @@ class Model(nn.Module):
         encoder_hidden_states, encoder_last_hidden_state = self.encoder(encoder_embedding)
 
         # Decoder
-        ## Init decoder_input
-        decoder_input = decoder_embedding[0].unsqueeze(dim=0)
         ## Init decoder_hidden_state as encoder_last_hidden_state
         decoder_hidden_state = encoder_last_hidden_state
         ## Init decoder_cell_state
         decoder_cell_state = torch.zeros(decoder_hidden_state.shape, device=DEVICE)
         ## Loop through target
         for i in range(target_sequence_length):
-            decoder_hidden_state, decoder_cell_state, attention_distribution, vocabulary_distribution \
-                = self.decoder(decoder_input, decoder_hidden_state, decoder_cell_state, encoder_hidden_states)
+            ## Init decoder_input
+            decoder_input = decoder_embedding[i].unsqueeze(dim=0)
+            ## Forward through Decoder
+            final_distribution, decoder_hidden_state, decoder_cell_state = self.decoder(decoder_input, decoder_hidden_state, decoder_cell_state, encoder_hidden_states)

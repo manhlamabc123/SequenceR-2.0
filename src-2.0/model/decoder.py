@@ -34,6 +34,13 @@ class InputFeedRNNDecoder(nn.Module):
         )
         self.log_softmax = nn.LogSoftmax(dim=2)
 
+        self.p_gen = nn.Linear(
+            in_features=HIDDEN_SIZE * 2,
+            out_features=1,
+            bias=True
+        )
+        self.sigmoid = nn.Sigmoid()
+
     def forward(self, input, decoder_hidden_state, cell_state, encoder_hidden_states):
         # Get input's sequence length
         sequence_length = encoder_hidden_states.shape[0]
@@ -60,4 +67,11 @@ class InputFeedRNNDecoder(nn.Module):
         # Vocabulary Distribution
         vocabulary_distribution = self.log_softmax(self.linear(decoder_hidden_state[1].unsqueeze(dim=0)))
 
-        return decoder_hidden_state, cell_state, attention_distribution, vocabulary_distribution
+        # Calculate p_gen
+        p_gen = torch.add(torch.add(self.p_gen(context_vector.permute(1, 0, 2)), self.p_gen(decoder_hidden_state[1].unsqueeze(dim=0))), self.p_gen(input))
+        p_gen = self.sigmoid(p_gen)
+
+        # Calculate final_distribution
+        final_distribution = torch.add(torch.mul(p_gen, vocabulary_distribution), torch.mul((1 - p_gen), attention_distribution.permute(2, 1, 0)))
+
+        return final_distribution, decoder_hidden_state, cell_state
