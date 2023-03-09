@@ -39,27 +39,26 @@ if args.data:
     print("> Done!\n")
 
 if args.train:
+    # Load dataset
     print("> Load dataset...\n")
 
-    train_set, val_set, _, source, target = preprocess(
+    train_set, val_set, _, vocabulary = preprocess(
         data_dir="preprocess/preprocessed",
-        max_src_seq_length=MAX_SRC_SEQ_LENGTH,
-        max_tgt_seq_length=MAX_TGT_SEQ_LENGTH,
-        src_vocab_threshold=SRC_VOCAB_THRESHOLD,
-        tgt_vocab_threshold=TGT_VOCAB_THRESHOLD
+        max_vocab=SRC_VOCAB_THRESHOLD,
     )
 
-    print('> Source vocab: ', len(source.vocab))
-    print('> Target vocab: ', len(target.vocab))
+    print('> Vocabulary: ', len(vocabulary.vocab))
     print('\n')
 
+    # Initialize model
     print("> Initialize model...\n")
 
     model = Model(
-        input_size=len(source.vocab),
-        output_size=len(target.vocab)
+        input_size=len(vocabulary.vocab),
+        output_size=len(vocabulary.vocab)
     ).to(device=DEVICE)
 
+    # Start training
     print("> Training...\n")
 
     train(

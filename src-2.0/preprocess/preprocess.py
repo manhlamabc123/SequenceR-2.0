@@ -25,19 +25,22 @@ def preprocess(
         data_dir: str,
         max_src_seq_length: int = 192,
         max_tgt_seq_length: int = 192,
-        src_vocab_threshold: int = 0,
-        tgt_vocab_threshold: int = 0
+        max_vocab: int = 0
 ):
     tokenize = lambda x: x.split()
 
     source = Field(
         sequential=True,
         use_vocab=True,
+        init_token='<SOS>',
+        eos_token='<EOS>',
         tokenize=tokenize,
     )
     target = Field(
         sequential=True,
         use_vocab=True,
+        init_token='<SOS>',
+        eos_token='<EOS>',
         tokenize=tokenize,
     )
 
@@ -55,14 +58,15 @@ def preprocess(
         fields=fields
     )
 
+    print('> Train: ', len(train_data))
+    print('> Validation: ', len(val_data))
+    print('> Test: ', len(test_data))
+
     source.build_vocab(
         train_data,
-        min_freq=src_vocab_threshold
+        max_size=max_vocab
     )
-    target.build_vocab(
-        train_data,
-        min_freq=src_vocab_threshold
-    )
+    target.vocab = source.vocab
 
     train_iterator, val_iterator, test_iterator = BucketIterator.splits(
         (train_data, val_data, test_data),
@@ -70,4 +74,4 @@ def preprocess(
         device=DEVICE
     )
 
-    return train_iterator, val_iterator, test_iterator, source, target
+    return train_iterator, val_iterator, test_iterator, source
