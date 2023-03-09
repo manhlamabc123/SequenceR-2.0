@@ -27,7 +27,8 @@ class Model(nn.Module):
         decoder_hidden_state = encoder_last_hidden_state
         decoder_hidden_state = torch.zeros(decoder_hidden_state.shape)
         for i in range(target_sequence_length):
-            decoder_hidden_state, decoder_cell_state = self.decoder(input, decoder_hidden_state, decoder_cell_state, encoder_hidden_states)
+            decoder_hidden_state, decoder_cell_state, attention_distribution, vocabulary_distribution \
+                = self.decoder(input, decoder_hidden_state, decoder_cell_state, encoder_hidden_states)
 
         output_generator = self.generator()
         pass
