@@ -48,14 +48,13 @@ if args.train:
     )
 
     print('> Vocabulary: ', len(vocabulary.vocab))
-    print('\n')
+    print()
 
     # Initialize model
     print("> Initialize model...\n")
 
     model = Model(
-        input_size=len(vocabulary.vocab),
-        output_size=len(vocabulary.vocab)
+        vocab_size=len(vocabulary.vocab),
     ).to(device=DEVICE)
 
     # Start training
