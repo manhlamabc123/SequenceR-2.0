@@ -18,22 +18,29 @@ args = parser.parse_args()
 if args.data:
     print("> Processing Data...\n")
 
-    handling_corpus(
-        src_dir="src-train.txt",
-        tgt_dir="tgt-train.txt",
-        output_file_name="train"
-    )
+    # handling_corpus(
+    #     src_dir="src-train.txt",
+    #     tgt_dir="tgt-train.txt",
+    #     output_file_name="train"
+    # )
 
-    handling_corpus(
+    # handling_corpus(
+    #     src_dir="src-val.txt",
+    #     tgt_dir="tgt-val.txt",
+    #     output_file_name="val"
+    # )
+
+    # handling_corpus(
+    #     src_dir="src-test.txt",
+    #     tgt_dir="tgt-test.txt",
+    #     output_file_name="test"
+    # )
+
+    preprocess(
         src_dir="src-val.txt",
         tgt_dir="tgt-val.txt",
-        output_file_name="val"
-    )
-
-    handling_corpus(
-        src_dir="src-test.txt",
-        tgt_dir="tgt-test.txt",
-        output_file_name="test"
+        data_dir="preprocess/preprocessed",
+        max_vocab=SRC_VOCAB_THRESHOLD,
     )
 
     print("> Done!\n")
@@ -41,11 +48,6 @@ if args.data:
 if args.train:
     # Load dataset
     print("> Load dataset...\n")
-
-    train_set, val_set, _, vocabulary = preprocess(
-        data_dir="preprocess/preprocessed",
-        max_vocab=SRC_VOCAB_THRESHOLD,
-    )
 
     print('> Vocabulary: ', len(vocabulary.vocab))
     print()
