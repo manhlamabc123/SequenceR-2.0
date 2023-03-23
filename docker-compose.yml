@@ -1,6 +1,0 @@
-services:
-  sequencer:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: manhlamabc/sequencer2:1.0
