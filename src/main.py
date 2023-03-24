@@ -1,7 +1,7 @@
 import argparse
 import torch
 
-from preprocess.preprocess import handling_corpus, preprocess
+from preprocess.preprocess import preprocess
 from model.model import Model
 from train.train import train
 from constanst import *
@@ -18,55 +18,14 @@ args = parser.parse_args()
 if args.data:
     print("> Processing Data...\n")
 
-    # handling_corpus(
-    #     src_dir="src-train.txt",
-    #     tgt_dir="tgt-train.txt",
-    #     output_file_name="train"
-    # )
-
-    # handling_corpus(
-    #     src_dir="src-val.txt",
-    #     tgt_dir="tgt-val.txt",
-    #     output_file_name="val"
-    # )
-
-    # handling_corpus(
-    #     src_dir="src-test.txt",
-    #     tgt_dir="tgt-test.txt",
-    #     output_file_name="test"
-    # )
-
-    preprocess(
-        src_dir="src-val.txt",
-        tgt_dir="tgt-val.txt",
-        data_dir="preprocess/preprocessed",
-        max_vocab=SRC_VOCAB_THRESHOLD,
-    )
+    preprocess(src_dir="src-train.txt", tgt_dir="tgt-train.txt")
+    # preprocess(src_dir="src-val.txt", tgt_dir="tgt-val.txt")
 
     print("> Done!\n")
 
 if args.train:
     # Load dataset
     print("> Load dataset...\n")
-
-    print('> Vocabulary: ', len(vocabulary.vocab))
-    print()
-
-    # Initialize model
-    print("> Initialize model...\n")
-
-    model = Model(
-        vocab_size=len(vocabulary.vocab),
-    ).to(device=DEVICE)
-
-    # Start training
-    print("> Training...\n")
-
-    train(
-        model=model,
-        train_set=train_set,
-        val_set=val_set
-    )
 
     print("> Done!\n")
 

@@ -1,53 +1,64 @@
 from constanst import *
 from hyperparameters import *
 from torchtext.vocab import build_vocab_from_iterator
-import json
+import pandas as pd
+from torch.utils.data import DataLoader
+from preprocess.my_dataset import MyDataset
 
-def handling_corpus(src_dir: str, tgt_dir: str, output_file_name: str) -> None:
-    ## Read dataset .txt to list of one-line code
-    src = open(DATA_DIR + src_dir, 'r').read().splitlines()
-    tgt = open(DATA_DIR + tgt_dir, 'r').read().splitlines()
-    src_tgt = list(zip(src, tgt)) # Combines 2 lists into 1 lists of (source, target)
-    ## From lists of (source, target) to lists of jsons
-    raw_data = [
-        {
-            "src": example[0],
-            "tgt": example[1]
-        } for example in src_tgt
-    ]
-    ## From lists of jsons to .json
-    with open(f'preprocess/preprocessed/{output_file_name}.json', 'w') as file:
-        for item in raw_data:
-            json.dump(item, file)
-            file.write('\n')
+def text_preprocessor(dataframe):
+    dataframe['src'] = dataframe['src'].apply(lambda x: x.split())
+    dataframe['tgt'] = dataframe['tgt'].apply(lambda x: x.split())
+    # dataframe = dataframe[dataframe['src'].str.len() <= MAX_SRC_SEQ_LENGTH]
+    # dataframe = dataframe[dataframe['tgt'].str.len() <= MAX_TGT_SEQ_LENGTH]
+    return dataframe
 
 def preprocess(
         src_dir: str,
         tgt_dir: str,
-        data_dir: str,
-        max_src_seq_length: int = 192,
-        max_tgt_seq_length: int = 192,
-        max_vocab: int = 0
+        create_vocab = False
 ):
-    ## Read dataset .txt to list of one-line code
+    # Read dataset .txt to list of one-line code
     src = open(DATA_DIR + src_dir, 'r').read().splitlines()
     tgt = open(DATA_DIR + tgt_dir, 'r').read().splitlines()
 
-    tokenize = lambda x: x.split()
+    # Create Vocab
+    if create_vocab:
+        # Tokenizer
+        tokenize = lambda x: x.split()
 
-    def yield_tokens():
-        for line in src:
-            tokens = tokenize(line)
-            yield tokens
+        # Create Vocab. How to use build_vocab_from_iterator
+        def yield_tokens():
+            for line in src:
+                tokens = tokenize(line)
+                yield tokens
 
-    token_generator = yield_tokens()
+        token_generator = yield_tokens()
 
-    vocab = build_vocab_from_iterator(
-            token_generator, 
-            max_tokens=max_vocab,
-            specials=['<pad>', '<unk>', '<sos>', '<eos>']
-        )
+        vocab = build_vocab_from_iterator(
+                token_generator, 
+                max_tokens=SRC_VOCAB_THRESHOLD,
+                specials=['<pad>', '<unk>', '<sos>', '<eos>']
+            )
     
-    # print(vocab.get_stoi())
-    print(len(vocab.get_itos()))
-    print(vocab.__len__())
+    # Build pandas DataFrame
+    ## Create json
+    raw_data = {
+            "src": [line for line in src],
+            "tgt": [line for line in tgt],
+        }
+    ## Create DataFrame
+    df = pd.DataFrame(raw_data)
+    ## Preprocess the data in DataFrame
+    df = text_preprocessor(df)
+
+    dataset = MyDataset(df)
+    dataset_loader = DataLoader(dataset, batch_size=BATCH_SIZE)
+    for data in dataset_loader:
+        src, tgt = data
+        print(src, tgt)
+        break
+
+    if create_vocab:
+        return vocab
+    else:
+        return
