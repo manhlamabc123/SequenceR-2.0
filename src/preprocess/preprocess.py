@@ -67,8 +67,8 @@ def preprocess(
     # List to Tensor
     for i, pair in enumerate(src_tgt):
         src, tgt = pair
-        src = torch.tensor(src, dtype=torch.float16)
-        tgt = torch.tensor(tgt, dtype=torch.float16)
+        src = torch.tensor(src, dtype=torch.long, device=DEVICE)
+        tgt = torch.tensor(tgt, dtype=torch.long, device=DEVICE)
         src_tgt[i] = (src, tgt)
 
     # function to collate data samples into batch tesors
