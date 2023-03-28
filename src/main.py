@@ -15,6 +15,12 @@ group.add_argument('-e', '--evaluate', action='store_true', help='evalute model'
 args = parser.parse_args()
 
 if args.train:
+    # I do not fully get this part
+    # But this fix this "RuntimeError: Triton Error [CUDA]: device kernel image is invalid"
+    import torch._dynamo as dynamo
+    torch._dynamo.config.suppress_errors = True
+    torch.backends.cudnn.benchmark = True
+
     print("> Processing data...\n")
 
     vocab, train_loader = preprocess(src_dir="src-train.txt", tgt_dir="tgt-train.txt")
