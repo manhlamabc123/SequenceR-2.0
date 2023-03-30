@@ -4,6 +4,7 @@ from torchtext.vocab import build_vocab_from_iterator
 import pandas as pd
 from torch.utils.data import DataLoader
 from torch.nn.utils.rnn import pad_sequence
+import torch.nn as nn
 
 def text_preprocessor(dataframe, vocab):
     dataframe['src'] = dataframe['src'].apply(lambda x: x.split())
@@ -12,8 +13,6 @@ def text_preprocessor(dataframe, vocab):
     dataframe['tgt'] = dataframe['tgt'].apply(lambda x: ['<sos>'] + x)
     dataframe['src'] = dataframe['src'].apply(lambda x: x + ['<eos>'])
     dataframe['tgt'] = dataframe['tgt'].apply(lambda x: x + ['<eos>'])
-    # dataframe = dataframe[dataframe['src'].str.len() <= MAX_SRC_SEQ_LENGTH]
-    # dataframe = dataframe[dataframe['tgt'].str.len() <= MAX_TGT_SEQ_LENGTH]
     dataframe['src'] = dataframe['src'].apply(lambda x: vocab(x))
     dataframe['tgt'] = dataframe['tgt'].apply(lambda x: vocab(x))
     return dataframe
@@ -73,11 +72,14 @@ def preprocess(
 
     # function to collate data samples into batch tesors
     def collate_fn(batch):
+        max_length = 1004
         src_batch, tgt_batch = [], []
         
         for src_sample, tgt_sample in batch:
             src_batch.append(src_sample)
             tgt_batch.append(tgt_sample)
+
+        src_batch[0] = nn.ConstantPad1d((0, max_length - src_batch[0].shape[0]), 0)(src_batch[0])
 
         src_batch = pad_sequence(src_batch, padding_value=0)
         tgt_batch = pad_sequence(tgt_batch, padding_value=0)
