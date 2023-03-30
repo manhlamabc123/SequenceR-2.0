@@ -73,10 +73,12 @@ class InputFeedRNNDecoder(nn.Module):
         vocabulary_distribution = self.log_softmax(self.linear(decoder_hidden_state[1].unsqueeze(dim=0)))
 
         # Calculate p_gen
-        p_gen = torch.add(torch.add(self.p_gen(context_vector.permute(1, 0, 2)), self.p_gen(decoder_hidden_state[1].unsqueeze(dim=0))), self.p_gen(input))
+        p_gen = torch.concat((context_vector.permute(1, 0, 2), decoder_hidden_state[1].unsqueeze(dim=0), input), dim = 0)
+        p_gen_copy = self.p_gen_copy(p_gen)
+        p_gen = self.p_gen(p_gen)
         p_gen = self.sigmoid(p_gen)
 
         # Calculate final_distribution
-        final_distribution = torch.add(torch.mul(p_gen, vocabulary_distribution), torch.mul((1 - p_gen), attention_distribution.permute(2, 1, 0)))
+        final_distribution = torch.add(torch.mul(p_gen_copy, vocabulary_distribution), torch.mul((1 - p_gen), attention_distribution.permute(2, 1, 0)))
 
         return final_distribution, decoder_hidden_state, cell_state
