@@ -34,9 +34,14 @@ class InputFeedRNNDecoder(nn.Module):
         )
         self.log_softmax = nn.LogSoftmax(dim=2)
 
-        self.p_gen = nn.Linear(
+        self.p_gen_copy = nn.Linear(
             in_features=HIDDEN_SIZE * 2,
             out_features=1,
+            bias=True
+        )
+        self.p_gen = nn.Linear(
+            in_features=HIDDEN_SIZE * 2,
+            out_features=output_size,
             bias=True
         )
         self.sigmoid = nn.Sigmoid()
