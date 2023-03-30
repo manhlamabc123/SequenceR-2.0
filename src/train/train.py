@@ -28,9 +28,9 @@ def per_iter(train_set, model: nn.Module, optimizer: optim.Optimizer, criterion:
         output = model(input, target)
 
         ## Compute loss
-        loss = criterion(output, target)
+        loss = criterion(output.view(-1, output.shape[2]), target.view(target.shape[0] * target.shape[1]))
 
-        ## Update loss
+        ## Update loss 
         loss_current += loss.item()
 
         ## Backward
