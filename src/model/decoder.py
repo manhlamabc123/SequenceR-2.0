@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from hyperparameters import *
 
-class InputFeedRNNDecoder(nn.Module):
+class Decoder(nn.Module):
     def __init__(self, output_size):
         super().__init__()
 

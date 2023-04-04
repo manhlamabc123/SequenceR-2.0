@@ -34,6 +34,7 @@ if args.train:
 
     model = Model(vocab_size=vocab.__len__())
     model = torch.compile(model).to(DEVICE)
+    print(model)
 
     print("> Training...")
 

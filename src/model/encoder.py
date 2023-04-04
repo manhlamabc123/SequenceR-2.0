@@ -2,7 +2,7 @@ import torch.nn as nn
 from hyperparameters import *
 import torch
 
-class RNNEncoder(nn.Module):
+class Encoder(nn.Module):
     def __init__(self, input_size):
         super().__init__()
 

@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-from .encoder import RNNEncoder
-from .decoder import InputFeedRNNDecoder
+from .encoder import Encoder
+from .decoder import Decoder
 from hyperparameters import *
 from constanst import *
 
@@ -14,12 +14,12 @@ class Model(nn.Module):
             embedding_dim=EMBEDDING_SIZE,
             padding_idx=EMBEDDING_PAD
         )
-        self.encoder = RNNEncoder(vocab_size)
-        self.decoder = InputFeedRNNDecoder(vocab_size)
+        self.encoder = Encoder(vocab_size)
+        self.decoder = Decoder(vocab_size)
 
     def forward(self, input, target=None):
         # Get target length
-        if target == None:
+        if target is None:
             target_sequence_length = MAX_TGT_SEQ_LENGTH
         else:
             target_sequence_length = target.shape[0]
@@ -42,3 +42,5 @@ class Model(nn.Module):
             decoder_input = decoder_embedding[i].unsqueeze(dim=0)
             ## Forward through Decoder
             final_distribution, decoder_hidden_state, decoder_cell_state = self.decoder(decoder_input, decoder_hidden_state, decoder_cell_state, encoder_hidden_states)
+            
+        return final_distribution    
